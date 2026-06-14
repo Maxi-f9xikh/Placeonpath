@@ -3,7 +3,7 @@ package de.maxi.placeonpath.mixin;
 import de.maxi.placeonpath.registry.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.RandomSource;
+import java.util.Random;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.DirtPathBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,7 +34,7 @@ public class DirtPathBlockMixin {
      * mod), redirect it to our full-height path block instead of letting it become dirt.
      */
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
-    private void placeonpath$keepPath(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, CallbackInfo ci) {
+    private void placeonpath$keepPath(BlockState state, ServerLevel level, BlockPos pos, Random random, CallbackInfo ci) {
         if (!level.getBlockState(pos.above()).isAir()) {
             level.setBlockAndUpdate(pos, ModBlocks.FULL_PATH_BLOCK.get().defaultBlockState());
         }
