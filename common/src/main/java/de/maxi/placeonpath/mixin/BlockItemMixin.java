@@ -8,6 +8,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -26,17 +27,22 @@ public class BlockItemMixin {
         if (level.isClientSide()) return;
 
         BlockPos placedPos = context.getClickedPos().relative(context.getClickedFace());
+        BlockState placedState = level.getBlockState(placedPos);
 
-        // Only react if a block actually ended up resting on top of the path block.
-        if (level.getBlockState(placedPos).isAir()) return;
+        // Only react if a block actually ended up being placed.
+        if (placedState.isAir()) return;
 
+        // Case 1: a block was placed on top of a path -> make the path below full-height
+        // so there is no visible gap to the block resting on it.
         BlockPos belowPlaced = placedPos.below();
         if (level.getBlockState(belowPlaced).is(Blocks.DIRT_PATH)) {
-            // Replace the slightly-shorter vanilla dirt path with our full-height variant
-            // so there is no visible gap to the block placed on top of it. This also
-            // neutralises the vanilla scheduled tick that would otherwise turn the path
-            // into plain dirt, because that tick only runs while the block is a DirtPathBlock.
             level.setBlock(belowPlaced, ModBlocks.FULL_PATH_BLOCK.get().defaultBlockState(), Block.UPDATE_ALL);
+        }
+
+        // Case 2: a path was placed directly underneath an existing block -> swap it for
+        // the full-height variant as well, instead of leaving a normal (shorter) path.
+        if (placedState.is(Blocks.DIRT_PATH) && !level.getBlockState(placedPos.above()).isAir()) {
+            level.setBlock(placedPos, ModBlocks.FULL_PATH_BLOCK.get().defaultBlockState(), Block.UPDATE_ALL);
         }
     }
 }

@@ -6,7 +6,8 @@
   "client": [
   ],
   "mixins": [
-    "BlockItemMixin"
+    "BlockItemMixin",
+    "DirtPathBlockMixin"
   ],
   "injectors": {
     "defaultRequire": 1
