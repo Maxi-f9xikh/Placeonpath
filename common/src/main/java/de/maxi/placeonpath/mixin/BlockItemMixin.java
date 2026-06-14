@@ -19,10 +19,6 @@ public class BlockItemMixin {
 
     @Inject(method = "useOn", at = @At("RETURN"))
     private void onBlockPlaced(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
-        // BlockItem#place returns CONSUME on the server and SUCCESS on the client,
-        // so we check consumesAction() instead of comparing against SUCCESS directly.
-        if (!cir.getReturnValue().consumesAction()) return;
-
         Level level = context.getLevel();
         if (level.isClientSide()) return;
 
