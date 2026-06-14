@@ -8,7 +8,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.Material;
 
 public class ModBlocks {
 
@@ -17,8 +17,7 @@ public class ModBlocks {
 
     public static final RegistrySupplier<Block> FULL_PATH_BLOCK = BLOCKS.register("path_full_block",
             () -> new PathFullBlock(
-                    BlockBehaviour.Properties.of()
-                            .mapColor(MapColor.DIRT)
+                    BlockBehaviour.Properties.of(Material.DIRT)
                             .strength(0.65f)
                             .sound(SoundType.GRAVEL)
             ));
