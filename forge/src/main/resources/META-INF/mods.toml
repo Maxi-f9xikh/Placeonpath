@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[40,)"
+loaderVersion = "[36,)"
 license = "MIT"
 
 [[mods]]
@@ -8,29 +8,26 @@ version = "${version}"
 displayName = "PlaceOnPath"
 authors = "Maxi"
 description = '''
-Lets you place any block on dirt path blocks without turning them into dirt, and swaps the path for a full-height variant so there is no gap to the block on top.
+Lets you place any block on grass path blocks without turning them into dirt, and swaps the path for a full-height variant so there is no gap to the block on top.
 '''
 
 [[dependencies.placeonpath]]
 modId = "forge"
 type = "required"
-versionRange = "[40,)"
+versionRange = "[36,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.placeonpath]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.18.2,)"
+versionRange = "[1.16.5,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.placeonpath]]
 modId = "architectury"
 type = "required"
-versionRange = "[4.12.94,)"
+versionRange = "[1.32.68,)"
 ordering = "AFTER"
 side = "BOTH"
-
-[[mixins]]
-config = "placeonpath.mixins.json"

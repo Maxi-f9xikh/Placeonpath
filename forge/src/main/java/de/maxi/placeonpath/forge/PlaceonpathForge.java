@@ -1,7 +1,7 @@
 package de.maxi.placeonpath.forge;
 
 import de.maxi.placeonpath.Placeonpath;
-import dev.architectury.platform.forge.EventBuses;
+import me.shedaniel.architectury.platform.forge.EventBuses;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 

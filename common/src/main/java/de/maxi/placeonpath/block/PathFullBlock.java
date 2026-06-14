@@ -17,7 +17,7 @@ public class PathFullBlock extends Block {
         super.neighborChanged(state, level, pos, block, fromPos, isMoving);
         if (!level.isClientSide() && fromPos.equals(pos.above())) {
             if (level.getBlockState(pos.above()).isAir()) {
-                level.setBlock(pos, Blocks.DIRT_PATH.defaultBlockState(), Block.UPDATE_ALL);
+                level.setBlock(pos, Blocks.GRASS_PATH.defaultBlockState(), 3);
             }
         }
     }

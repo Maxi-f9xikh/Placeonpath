@@ -35,14 +35,14 @@ public class BlockItemMixin {
         // Case 1: a block was placed on top of a path -> make the path below full-height
         // so there is no visible gap to the block resting on it.
         BlockPos belowPlaced = placedPos.below();
-        if (level.getBlockState(belowPlaced).is(Blocks.DIRT_PATH)) {
-            level.setBlock(belowPlaced, ModBlocks.FULL_PATH_BLOCK.get().defaultBlockState(), Block.UPDATE_ALL);
+        if (level.getBlockState(belowPlaced).is(Blocks.GRASS_PATH)) {
+            level.setBlock(belowPlaced, ModBlocks.FULL_PATH_BLOCK.get().defaultBlockState(), 3);
         }
 
         // Case 2: a path was placed directly underneath an existing block -> swap it for
         // the full-height variant as well, instead of leaving a normal (shorter) path.
-        if (placedState.is(Blocks.DIRT_PATH) && !level.getBlockState(placedPos.above()).isAir()) {
-            level.setBlock(placedPos, ModBlocks.FULL_PATH_BLOCK.get().defaultBlockState(), Block.UPDATE_ALL);
+        if (placedState.is(Blocks.GRASS_PATH) && !level.getBlockState(placedPos.above()).isAir()) {
+            level.setBlock(placedPos, ModBlocks.FULL_PATH_BLOCK.get().defaultBlockState(), 3);
         }
     }
 }
