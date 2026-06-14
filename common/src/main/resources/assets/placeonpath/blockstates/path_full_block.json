@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "placeonpath:block/path_full_block" }
+  }
+}

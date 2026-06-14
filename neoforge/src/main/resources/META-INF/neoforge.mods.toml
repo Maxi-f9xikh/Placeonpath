@@ -1,0 +1,38 @@
+modLoader = "javafml"
+loaderVersion = "[2,)"
+#issueTrackerURL = ""
+license = "MIT"
+
+[[mods]]
+modId = "placeonpath"
+version = "${version}"
+displayName = "PlaceOnPath"
+authors = "Maxi"
+description = '''
+Lets you place any block on dirt path blocks without turning them into dirt, and swaps the path for a full-height variant so there is no gap to the block on top.
+'''
+#logoFile = ""
+
+[[dependencies.placeonpath]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.placeonpath]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.placeonpath]]
+modId = "architectury"
+type = "required"
+versionRange = "[13.0.8,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[mixins]]
+config = "placeonpath.mixins.json"

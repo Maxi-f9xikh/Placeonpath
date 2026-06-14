@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "de.maxi.placeonpath.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "minVersion": "0.8",
+  "client": [
+  ],
+  "mixins": [
+    "BlockItemMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

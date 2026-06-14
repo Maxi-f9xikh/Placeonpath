@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "placeonpath",
+  "version": "${version}",
+  "name": "PlaceOnPath",
+  "description": "Lets you place any block on dirt path blocks without turning them into dirt, and swaps the path for a full-height variant so there is no gap to the block on top.",
+  "authors": [
+    "Maxi"
+  ],
+  "contact": {
+    "homepage": ""
+  },
+  "license": "MIT",
+  "icon": "assets/placeonpath/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "de.maxi.placeonpath.fabric.PlaceonpathFabric"
+    ],
+    "client": [
+      "de.maxi.placeonpath.fabric.client.PlaceonpathFabricClient"
+    ]
+  },
+  "mixins": [
+    "placeonpath.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.3",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "architectury": ">=13.0.8",
+    "fabric-api": "*"
+  }
+}

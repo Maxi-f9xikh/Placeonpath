@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "up":     "minecraft:block/dirt_path_top",
+    "down":   "minecraft:block/dirt",
+    "north":  "minecraft:block/dirt_path_side",
+    "south":  "minecraft:block/dirt_path_side",
+    "east":   "minecraft:block/dirt_path_side",
+    "west":   "minecraft:block/dirt_path_side",
+    "particle": "minecraft:block/dirt_path_side"
+  }
+}
