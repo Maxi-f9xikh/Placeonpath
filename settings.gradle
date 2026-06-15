@@ -11,4 +11,3 @@ rootProject.name = 'placeonpath'
 
 include 'common'
 include 'fabric'
-include 'forge'

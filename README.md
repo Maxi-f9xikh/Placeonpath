@@ -33,7 +33,7 @@ The full-height path block is purely technical:
 | 1.19.4 | Fabric, Forge | `1.19.4` |
 | 1.19.2 | Fabric, Forge | `1.19.2` |
 | 1.18.2 | Fabric, Forge | `1.18.2` |
-| 1.16.5 | Fabric, Forge | `1.16.5` |
+| 1.16.5 | Fabric | `1.16.5` |
 
 ## Building
 
