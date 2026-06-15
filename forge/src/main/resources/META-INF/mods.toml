@@ -13,21 +13,21 @@ Lets you place any block on grass path blocks without turning them into dirt, an
 
 [[dependencies.placeonpath]]
 modId = "forge"
-type = "required"
+mandatory = true
 versionRange = "[36,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.placeonpath]]
 modId = "minecraft"
-type = "required"
+mandatory = true
 versionRange = "[1.16.5,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.placeonpath]]
 modId = "architectury"
-type = "required"
+mandatory = true
 versionRange = "[1.32.68,)"
 ordering = "AFTER"
 side = "BOTH"

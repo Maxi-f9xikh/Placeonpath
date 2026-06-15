@@ -3,6 +3,7 @@
   "package": "de.maxi.placeonpath.mixin",
   "compatibilityLevel": "JAVA_8",
   "minVersion": "0.8",
+  "refmap": "placeonpath-common-common-refmap.json",
   "client": [
   ],
   "mixins": [
