@@ -33,18 +33,30 @@ public class BlockItemMixin {
         // Only react if a block actually ended up being placed.
         if (placedState.isAir()) return;
 
-        // Case 1: a block was placed on top of a path -> make the path below full-height
-        // so there is no visible gap to the block resting on it (unless that block is blacklisted).
+        // Case 1: a block was placed on top of a path.
+        //  - blacklisted block -> actively turn the path into dirt (works even for non-solid
+        //    blocks like fence gates, which vanilla would never convert on its own).
+        //  - otherwise -> make the path below full-height so there is no gap to the block on it.
         BlockPos belowPlaced = placedPos.below();
-        if (level.getBlockState(belowPlaced).is(Blocks.DIRT_PATH) && !PathRules.shouldTurnToDirt(placedState)) {
-            level.setBlock(belowPlaced, ModBlocks.FULL_PATH_BLOCK.get().defaultBlockState(), Block.UPDATE_ALL);
+        BlockState belowState = level.getBlockState(belowPlaced);
+        boolean belowIsPath = belowState.is(Blocks.DIRT_PATH) || belowState.is(ModBlocks.FULL_PATH_BLOCK.get());
+        if (belowIsPath) {
+            if (PathRules.shouldTurnToDirt(placedState)) {
+                level.setBlock(belowPlaced, Blocks.DIRT.defaultBlockState(), Block.UPDATE_ALL);
+            } else if (belowState.is(Blocks.DIRT_PATH)) {
+                level.setBlock(belowPlaced, ModBlocks.FULL_PATH_BLOCK.get().defaultBlockState(), Block.UPDATE_ALL);
+            }
         }
 
-        // Case 2: a path was placed directly underneath an existing block -> swap it for
-        // the full-height variant as well, unless that block is blacklisted.
+        // Case 2: a path was placed directly underneath an existing block.
+        //  - blacklisted block above -> the path becomes dirt; otherwise -> full-height variant.
         BlockState aboveState = level.getBlockState(placedPos.above());
-        if (placedState.is(Blocks.DIRT_PATH) && !aboveState.isAir() && !PathRules.shouldTurnToDirt(aboveState)) {
-            level.setBlock(placedPos, ModBlocks.FULL_PATH_BLOCK.get().defaultBlockState(), Block.UPDATE_ALL);
+        if (placedState.is(Blocks.DIRT_PATH) && !aboveState.isAir()) {
+            if (PathRules.shouldTurnToDirt(aboveState)) {
+                level.setBlock(placedPos, Blocks.DIRT.defaultBlockState(), Block.UPDATE_ALL);
+            } else {
+                level.setBlock(placedPos, ModBlocks.FULL_PATH_BLOCK.get().defaultBlockState(), Block.UPDATE_ALL);
+            }
         }
     }
 }

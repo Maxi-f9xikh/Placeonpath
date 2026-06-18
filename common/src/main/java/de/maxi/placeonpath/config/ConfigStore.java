@@ -71,4 +71,10 @@ public final class ConfigStore {
         if (blacklisted) TURN_TO_DIRT.addAll(ids);
         else TURN_TO_DIRT.removeAll(ids);
     }
+
+    /** Replace the whole in-memory set (used to discard unsaved screen edits). Does not write to disk. */
+    public static void replaceAll(Collection<String> ids) {
+        TURN_TO_DIRT.clear();
+        TURN_TO_DIRT.addAll(ids);
+    }
 }

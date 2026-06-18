@@ -5,8 +5,8 @@ import de.maxi.placeonpath.config.ConfigStore;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
@@ -18,6 +18,7 @@ import java.util.Set;
 public class PathConfigScreen extends Screen {
 
     private final Screen parent;
+    private final Set<String> original;            // baseline at open, to detect/discard unsaved edits
     private final Set<String> expanded = new HashSet<>();
     private EditBox search;
     private String query = "";
@@ -46,6 +47,7 @@ public class PathConfigScreen extends Screen {
     public PathConfigScreen(Screen parent) {
         super(Component.translatable("placeonpath.config.title"));
         this.parent = parent;
+        this.original = new HashSet<>(ConfigStore.entries());
     }
 
     @Override
@@ -57,8 +59,11 @@ public class PathConfigScreen extends Screen {
         this.search.setResponder(s -> { this.query = s.toLowerCase(); this.scroll = 0; });
         addRenderableWidget(this.search);
 
-        addRenderableWidget(Button.builder(CommonComponents.GUI_DONE, b -> onClose())
-                .bounds(this.width / 2 - 75, this.height - 28, 150, 20).build());
+        int by = this.height - 28;
+        addRenderableWidget(Button.builder(Component.translatable("placeonpath.config.save_exit"), b -> saveAndExit())
+                .bounds(this.width / 2 - 154, by, 150, 20).build());
+        addRenderableWidget(Button.builder(Component.translatable("placeonpath.config.exit"), b -> exitWithoutSave())
+                .bounds(this.width / 2 + 4, by, 150, 20).build());
 
         int listW = Math.min(this.width - 40, 360);
         this.listLeft = this.width / 2 - listW / 2;
@@ -260,9 +265,33 @@ public class PathConfigScreen extends Screen {
         return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
     }
 
-    @Override
-    public void onClose() {
+    private boolean hasUnsavedChanges() {
+        return !original.equals(new HashSet<>(ConfigStore.entries()));
+    }
+
+    private void saveAndExit() {
         ConfigStore.save();
         this.minecraft.setScreen(parent);
+    }
+
+    private void exitWithoutSave() {
+        if (!hasUnsavedChanges()) {
+            this.minecraft.setScreen(parent);
+            return;
+        }
+        this.minecraft.setScreen(new ConfirmScreen(confirmed -> {
+            if (confirmed) {
+                ConfigStore.replaceAll(original); // discard the unsaved edits
+                this.minecraft.setScreen(parent);
+            } else {
+                this.minecraft.setScreen(this);
+            }
+        }, Component.translatable("placeonpath.config.discard_title"),
+           Component.translatable("placeonpath.config.discard_message")));
+    }
+
+    @Override
+    public void onClose() {
+        exitWithoutSave(); // Esc routes through the same discard guard
     }
 }
