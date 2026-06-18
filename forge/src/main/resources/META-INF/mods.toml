@@ -6,6 +6,7 @@ license = "MIT"
 modId = "placeonpath"
 version = "${version}"
 displayName = "PlaceOnPath"
+logoFile = "icon.png"
 authors = "Maxi"
 description = '''
 Lets you place any block on dirt path blocks without turning them into dirt, and swaps the path for a full-height variant so there is no gap to the block on top.
