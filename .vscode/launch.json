@@ -1,0 +1,76 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Minecraft Client (:fabric)",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/fabric/run",
+      "console": "internalConsole",
+      "stopOnEntry": false,
+      "mainClass": "dev.architectury.transformer.TransformerRuntime",
+      "vmArgs": "\"-Dfabric.dli.config\u003dE:\\Programieren\\Projekte@@0020[Fabric]\\Placeonpath\\fabric\\.gradle\\loom-cache\\launch.cfg\" \"-Dfabric.dli.env\u003dclient\" \"-Dfabric.dli.main\u003dnet.fabricmc.loader.impl.launch.knot.KnotClient\" \"-Darchitectury.main.class\u003dE:\\Programieren\\Projekte [Fabric]\\Placeonpath\\fabric\\.gradle\\architectury\\.main_class\" \"-Darchitectury.runtime.transformer\u003dE:\\Programieren\\Projekte [Fabric]\\Placeonpath\\fabric\\.gradle\\architectury\\.transforms\" \"-Darchitectury.properties\u003dE:\\Programieren\\Projekte [Fabric]\\Placeonpath\\fabric\\.gradle\\architectury\\.properties\" \"-Djdk.attach.allowAttachSelf\u003dtrue\" \"-javaagent:E:\\Programieren\\Projekte [Fabric]\\Placeonpath\\.gradle\\architectury\\architectury-transformer-agent.jar\"",
+      "args": "",
+      "env": {},
+      "projectName": "fabric"
+    },
+    {
+      "type": "java",
+      "name": "Minecraft Server (:fabric)",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/fabric/run",
+      "console": "internalConsole",
+      "stopOnEntry": false,
+      "mainClass": "dev.architectury.transformer.TransformerRuntime",
+      "vmArgs": "\"-Dfabric.dli.config\u003dE:\\Programieren\\Projekte@@0020[Fabric]\\Placeonpath\\fabric\\.gradle\\loom-cache\\launch.cfg\" \"-Dfabric.dli.env\u003dserver\" \"-Dfabric.dli.main\u003dnet.fabricmc.loader.impl.launch.knot.KnotServer\" \"-Darchitectury.main.class\u003dE:\\Programieren\\Projekte [Fabric]\\Placeonpath\\fabric\\.gradle\\architectury\\.main_class\" \"-Darchitectury.runtime.transformer\u003dE:\\Programieren\\Projekte [Fabric]\\Placeonpath\\fabric\\.gradle\\architectury\\.transforms\" \"-Darchitectury.properties\u003dE:\\Programieren\\Projekte [Fabric]\\Placeonpath\\fabric\\.gradle\\architectury\\.properties\" \"-Djdk.attach.allowAttachSelf\u003dtrue\" \"-javaagent:E:\\Programieren\\Projekte [Fabric]\\Placeonpath\\.gradle\\architectury\\architectury-transformer-agent.jar\"",
+      "args": "\"nogui\"",
+      "env": {},
+      "projectName": "fabric"
+    },
+    {
+      "type": "java",
+      "name": "Minecraft Client (:forge)",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/forge/run",
+      "console": "internalConsole",
+      "stopOnEntry": false,
+      "mainClass": "dev.architectury.transformer.TransformerRuntime",
+      "vmArgs": "\"-Dfabric.dli.config\u003dE:\\Programieren\\Projekte@@0020[Fabric]\\Placeonpath\\forge\\.gradle\\loom-cache\\launch.cfg\" \"-Dfabric.dli.env\u003dclient\" \"-XX:+IgnoreUnrecognizedVMOptions\" \"--add-exports\u003djava.base/sun.security.util\u003dALL-UNNAMED\" \"--add-exports\u003djdk.naming.dns/com.sun.jndi.dns\u003djava.naming\" \"--add-opens\u003djava.base/java.util.jar\u003dALL-UNNAMED\" \"-Dfabric.dli.main\u003dnet.minecraftforge.userdev.LaunchTesting\" \"-Darchitectury.main.class\u003dE:\\Programieren\\Projekte [Fabric]\\Placeonpath\\forge\\.gradle\\architectury\\.main_class\" \"-Darchitectury.runtime.transformer\u003dE:\\Programieren\\Projekte [Fabric]\\Placeonpath\\forge\\.gradle\\architectury\\.transforms\" \"-Darchitectury.properties\u003dE:\\Programieren\\Projekte [Fabric]\\Placeonpath\\forge\\.gradle\\architectury\\.properties\" \"-Djdk.attach.allowAttachSelf\u003dtrue\" \"-javaagent:E:\\Programieren\\Projekte [Fabric]\\Placeonpath\\.gradle\\architectury\\architectury-transformer-agent.jar\"",
+      "args": "",
+      "env": {
+        "MOD_CLASSES": "main%%E:\\Programieren\\Projekte [Fabric]\\Placeonpath\\forge\\build\\resources\\main;main%%E:\\Programieren\\Projekte [Fabric]\\Placeonpath\\forge\\build\\classes\\java\\main",
+        "MCP_MAPPINGS": "loom.stub",
+        "MCP_VERSION": "20210115.111550",
+        "FORGE_VERSION": "36.2.42",
+        "assetIndex": "1.16.5-1.16",
+        "assetDirectory": "C:\\Users\\Maxi\\.gradle\\caches\\fabric-loom\\assets",
+        "nativesDirectory": "C:\\Users\\Maxi\\.gradle\\caches\\fabric-loom\\1.16.5\\natives",
+        "FORGE_GROUP": "net.minecraftforge",
+        "target": "fmluserdevclient",
+        "MC_VERSION": "1.16.5"
+      },
+      "projectName": "forge"
+    },
+    {
+      "type": "java",
+      "name": "Minecraft Server (:forge)",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/forge/run",
+      "console": "internalConsole",
+      "stopOnEntry": false,
+      "mainClass": "dev.architectury.transformer.TransformerRuntime",
+      "vmArgs": "\"-Dfabric.dli.config\u003dE:\\Programieren\\Projekte@@0020[Fabric]\\Placeonpath\\forge\\.gradle\\loom-cache\\launch.cfg\" \"-Dfabric.dli.env\u003dserver\" \"-XX:+IgnoreUnrecognizedVMOptions\" \"--add-exports\u003djava.base/sun.security.util\u003dALL-UNNAMED\" \"--add-exports\u003djdk.naming.dns/com.sun.jndi.dns\u003djava.naming\" \"--add-opens\u003djava.base/java.util.jar\u003dALL-UNNAMED\" \"-Dfabric.dli.main\u003dnet.minecraftforge.userdev.LaunchTesting\" \"-Darchitectury.main.class\u003dE:\\Programieren\\Projekte [Fabric]\\Placeonpath\\forge\\.gradle\\architectury\\.main_class\" \"-Darchitectury.runtime.transformer\u003dE:\\Programieren\\Projekte [Fabric]\\Placeonpath\\forge\\.gradle\\architectury\\.transforms\" \"-Darchitectury.properties\u003dE:\\Programieren\\Projekte [Fabric]\\Placeonpath\\forge\\.gradle\\architectury\\.properties\" \"-Djdk.attach.allowAttachSelf\u003dtrue\" \"-javaagent:E:\\Programieren\\Projekte [Fabric]\\Placeonpath\\.gradle\\architectury\\architectury-transformer-agent.jar\"",
+      "args": "\"nogui\"",
+      "env": {
+        "MOD_CLASSES": "main%%E:\\Programieren\\Projekte [Fabric]\\Placeonpath\\forge\\build\\resources\\main;main%%E:\\Programieren\\Projekte [Fabric]\\Placeonpath\\forge\\build\\classes\\java\\main",
+        "MCP_MAPPINGS": "loom.stub",
+        "MCP_VERSION": "20210115.111550",
+        "FORGE_VERSION": "36.2.42",
+        "FORGE_GROUP": "net.minecraftforge",
+        "target": "fmluserdevserver",
+        "MC_VERSION": "1.16.5"
+      },
+      "projectName": "forge"
+    }
+  ]
+}

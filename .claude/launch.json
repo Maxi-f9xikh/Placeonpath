@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "pacific",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["E:\\Programieren\\Projekte\\GrieferGames\\pacificCasino-Lampengenerator\\server.js"],
+      "port": 8753
+    }
+  ]
+}
