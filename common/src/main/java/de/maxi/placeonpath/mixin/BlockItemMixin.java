@@ -1,5 +1,6 @@
 package de.maxi.placeonpath.mixin;
 
+import de.maxi.placeonpath.config.PathRules;
 import de.maxi.placeonpath.registry.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
@@ -33,15 +34,16 @@ public class BlockItemMixin {
         if (placedState.isAir()) return;
 
         // Case 1: a block was placed on top of a path -> make the path below full-height
-        // so there is no visible gap to the block resting on it.
+        // so there is no visible gap to the block resting on it (unless that block is blacklisted).
         BlockPos belowPlaced = placedPos.below();
-        if (level.getBlockState(belowPlaced).is(Blocks.DIRT_PATH)) {
+        if (level.getBlockState(belowPlaced).is(Blocks.DIRT_PATH) && !PathRules.shouldTurnToDirt(placedState)) {
             level.setBlock(belowPlaced, ModBlocks.FULL_PATH_BLOCK.get().defaultBlockState(), Block.UPDATE_ALL);
         }
 
         // Case 2: a path was placed directly underneath an existing block -> swap it for
-        // the full-height variant as well, instead of leaving a normal (shorter) path.
-        if (placedState.is(Blocks.DIRT_PATH) && !level.getBlockState(placedPos.above()).isAir()) {
+        // the full-height variant as well, unless that block is blacklisted.
+        BlockState aboveState = level.getBlockState(placedPos.above());
+        if (placedState.is(Blocks.DIRT_PATH) && !aboveState.isAir() && !PathRules.shouldTurnToDirt(aboveState)) {
             level.setBlock(placedPos, ModBlocks.FULL_PATH_BLOCK.get().defaultBlockState(), Block.UPDATE_ALL);
         }
     }

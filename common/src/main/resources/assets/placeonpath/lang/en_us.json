@@ -1,3 +1,6 @@
 {
-  "block.placeonpath.path_full_block": "Dirt Path"
+  "block.placeonpath.path_full_block": "Dirt Path",
+  "text.autoconfig.placeonpath.title": "PlaceOnPath",
+  "text.autoconfig.placeonpath.option.turnPathToDirt": "Blocks that turn the path to dirt",
+  "text.autoconfig.placeonpath.option.turnPathToDirt.@Tooltip": "Block ids (minecraft:oak_fence) or tags (#minecraft:fences) that make a path turn to dirt when placed on it. Empty = every block keeps the path."
 }
