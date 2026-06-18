@@ -1,7 +1,9 @@
 # PlaceOnPath – Configurable block list (in-game config screen)
 
 **Date:** 2026-06-18
-**Status:** Approved design (pending spec review)
+**Status:** Approved design — **revised** to a custom GUI (see Approach). The earlier
+Cloth-Config text-list version shipped on master first; this revision replaces the
+screen + persistence (the gameplay mixins and the `PathRules` contract are unchanged).
 
 ## Goal
 
@@ -23,11 +25,16 @@ which blocks keep the path versus which let the path turn to dirt.
 
 ## Approach
 
-**Cloth Config** (`me.shedaniel.cloth`) — the standard cross-loader config library
-with a built-in GUI builder that integrates with ModMenu (Fabric) and the
-Forge/NeoForge config-screen extension point. One config definition yields the
-screen on every loader. (Chosen over hand-rolling a per-loader screen or mixing
-ForgeConfigSpec + Cloth.)
+A **custom GUI screen** (a hand-rolled `Screen` subclass in the shared module) plus a
+plain **gson JSON config** (`config/placeonpath.json`). **No Cloth Config.** The screen
+shows every *placeable* block grouped into expandable categories (Fences, Walls, Slabs,
+Stairs, Lights, Plants, Wood, Stone, Nature, …). Each block is **green** by default
+(keeps the path) or **red** (turns the path to dirt) and is toggled by clicking it; a
+category header toggles the whole group; a search box filters. The screen is wired into
+the Mods menu per loader (ModMenu on Fabric, the config-screen extension point on
+Forge/NeoForge). gson ships with Minecraft, so the only remaining optional dependency is
+ModMenu (the Fabric button). Chosen because the player asked for a visual, categorized
+green/red toggle grid, which Cloth's generated screens cannot express.
 
 ## Architecture
 
@@ -36,31 +43,34 @@ the thin screen-registration entrypoints are per-loader.
 
 ### Components
 
-- **`ModConfig` (common)** — the config object. One field:
-  `List<String> turnPathToDirt` (default empty). Persisted by Cloth to
-  `config/placeonpath.json`.
-- **`PathRules` (common)** — single source of truth for the decision:
-  `boolean shouldTurnToDirt(BlockState above)`. Returns true if `above`'s block id
-  equals a non-`#` entry, OR `above` is in a tag named by a `#`-entry. Reads the
-  current `ModConfig` each call (so edits are live). Tag entries are resolved via
-  the block's holder/tag membership for that MC version.
-- **Mixin changes (common)** — the three existing hook points become rule-aware:
-  - `BlockItemMixin#onBlockPlaced`: swap path → full-height block only when
-    `!PathRules.shouldTurnToDirt(placedBlock)`; otherwise do nothing (vanilla turns
-    it to dirt). Applies to both existing cases (block-on-path and path-under-block).
-  - `DirtPathBlockMixin#canSurvive`: keep forcing the survive=true (path stays)
-    **unless** `shouldTurnToDirt(above)` — in that case do not override, letting
-    vanilla `canSurvive` run (schedules the turn-to-dirt tick for solid blocks).
-  - `DirtPathBlockMixin#tick`: redirect to the full-height block **unless**
-    `shouldTurnToDirt(above)` — in that case let vanilla `turnToDirt` proceed.
-  - (1.16.5 uses `GrassPathBlock` and its `Block.UPDATE_ALL`=`3` quirk as today.)
+- **`ConfigStore` (common)** — the persisted state: a `LinkedHashSet<String>` of block
+  ids that turn the path to dirt (the "red" blocks). Saved to `config/placeonpath.json`
+  with gson via Architectury `Platform.getConfigFolder()`. Loaded on init; saved when
+  the screen closes. `#tag` entries are still honored if hand-added to the file (the GUI
+  itself only writes ids).
+- **`PathRules` (common)** — unchanged contract: `boolean shouldTurnToDirt(BlockState
+  above)`, now reading `ConfigStore` each call. id-equality OR `#tag` membership. Live.
+- **`BlockCatalog` (common)** — builds (once, lazily) the categorized list of
+  *placeable* blocks (`block.asItem() != AIR`, so technical/no-item blocks like our own
+  full-path block are excluded). Each block is bucketed into an ordered category by its
+  registry-id name (`…_fence`, `…_slab`, `…_stairs`, `…_button`, …) plus two tag checks
+  (flowers, saplings); anything unmatched falls into "Other". Entries are sorted by
+  display name. Categorising by id-name (not tags) keeps it portable across versions.
+- **`PathConfigScreen` (common, client)** — the hand-rolled `Screen`: title, search box,
+  a scroll/clip region of expandable category headers (each with a green/red group
+  toggle) and block cells (block icon + name, green = keeps path / red = turns to dirt),
+  and a Done button. Clicking a cell toggles that block in `ConfigStore`; clicking a
+  header pill toggles the whole category; closing the screen saves.
+- **Mixin changes (common)** — **unchanged** from the text-list version already on
+  master: `BlockItemMixin` swaps to the full-height block only when
+  `!shouldTurnToDirt(...)`; `DirtPathBlockMixin#canSurvive`/`#tick` keep the path unless
+  `shouldTurnToDirt(above)`. (1.16.5 uses `GrassPathBlock` as today.)
 - **Screen registration (per loader, thin):**
-  - Fabric: a `ModMenuApi` entrypoint returning the Cloth config screen factory
-    (declared in `fabric.mod.json` under the `modmenu` entrypoint). ModMenu is an
-    optional/suggested dependency — without it the mod still loads, just no button.
-  - Forge/NeoForge: register the config screen through the platform extension point
-    (`ConfigScreenHandler`/`IConfigScreenFactory` per version) so the mods-list
-    "Config" button opens the Cloth screen.
+  - Fabric: the existing `ModMenuApi` entrypoint, now returning
+    `parent -> new PathConfigScreen(parent)`. ModMenu stays optional/suggested.
+  - Forge/NeoForge: the config-screen extension point
+    (`IConfigScreenFactory` / `ConfigScreenHandler` per version) returns the same
+    `PathConfigScreen` so the mods-list "Config" button opens it.
 
 ### Data flow
 
@@ -87,12 +97,16 @@ governs gameplay; the client's Mods-menu screen only edits the client's own file
 (relevant for that client's singleplayer). This is the normal model for such configs
 and is acceptable; documented, not engineered around.
 
-## Dependencies (per branch, resolved during planning)
+## Dependencies (per branch)
 
-- Modern branches (1.18.2–1.21.4): `cloth-config-fabric/forge/neoforge` + ModMenu
-  (Fabric), versions matching each MC like the existing deps.
-- 1.16.5: the old `me.shedaniel.cloth:config-2` + period ModMenu on the existing
-  `me.shedaniel` / loom-0.10 toolchain — the riskiest port; isolated to that branch.
+- **No Cloth Config** — dropped (and its maven repo + the `cloth-config` mod-deps in
+  `fabric.mod.json` / `neoforge.mods.toml`). gson is bundled with Minecraft.
+- **Mod Menu** (Fabric only, optional/suggested) — provides the in-game config button;
+  version matched per branch (already present on each). Forge/NeoForge use the built-in
+  mods-list config button, no extra dependency.
+- The custom screen uses only vanilla client GUI APIs, so the per-branch work is
+  adapting those APIs (`GuiGraphics` in 1.20+, `PoseStack` + `ItemRenderer` + 3-arg
+  `mouseScrolled`/`renderBackground` in 1.16.5–1.19.x).
 
 ## Rollout
 
@@ -111,7 +125,11 @@ then user spot-check. Commit per branch (author Maxi, no Claude co-author).
 
 ## Risks
 
-- Cloth/ModMenu version matrix across 8 MC versions (same kind of work as the ports).
-- 1.16.5 old toolchain (old Cloth API + me.shedaniel artifacts).
-- Tag-membership API differs across versions (BlockState/Holder tag checks) — handled
-  in `PathRules` per branch.
+- The custom `Screen` is the bulk of the work and the main porting cost: the client GUI
+  API changed across versions (`GuiGraphics` 1.20+ vs `PoseStack` + `ItemRenderer`
+  earlier; `mouseScrolled`/`renderBackground` signatures). Build master first, then port.
+- 1.16.5 is the hardest GUI port (oldest API, `PoseStack`, manual item rendering).
+- Registry/tag API for the catalog + `PathRules` differs across versions
+  (`BuiltInRegistries` vs `Registry`, `TagKey` vs `Tag`) — small, isolated per branch.
+- Category coverage: id-name bucketing can misfile an oddly-named block into "Other";
+  acceptable (still toggleable), and easy to refine by adding a rule.

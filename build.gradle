@@ -24,7 +24,6 @@ subprojects {
     }
 
     repositories {
-        maven { url "https://maven.shedaniel.me/" }                 // Cloth Config
         maven { url "https://maven.terraformersmc.com/releases/" }  // Mod Menu
     }
 

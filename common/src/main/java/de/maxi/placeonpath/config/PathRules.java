@@ -4,7 +4,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 public final class PathRules {
@@ -12,7 +11,7 @@ public final class PathRules {
 
     /** True if the block above should make the path turn to dirt (vanilla behavior). */
     public static boolean shouldTurnToDirt(BlockState above) {
-        var entries = ModConfigHolder.get().turnPathToDirt;
+        var entries = ConfigStore.entries();
         if (entries.isEmpty()) return false;
         ResourceLocation id = BuiltInRegistries.BLOCK.getKey(above.getBlock());
         for (String raw : entries) {
