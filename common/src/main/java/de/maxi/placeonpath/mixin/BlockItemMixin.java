@@ -3,13 +3,16 @@ package de.maxi.placeonpath.mixin;
 import de.maxi.placeonpath.config.PathRules;
 import de.maxi.placeonpath.registry.ModBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BedPart;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -37,15 +40,16 @@ public class BlockItemMixin {
         //  - blacklisted block -> actively turn the path into dirt (works even for non-solid
         //    blocks like fence gates, which vanilla would never convert on its own).
         //  - otherwise -> make the path below full-height so there is no gap to the block on it.
-        BlockPos belowPlaced = placedPos.below();
-        BlockState belowState = level.getBlockState(belowPlaced);
-        boolean belowIsPath = belowState.is(Blocks.DIRT_PATH) || belowState.is(ModBlocks.FULL_PATH_BLOCK.get());
-        if (belowIsPath) {
-            if (PathRules.shouldTurnToDirt(placedState)) {
-                level.setBlock(belowPlaced, Blocks.DIRT.defaultBlockState(), Block.UPDATE_ALL);
-            } else if (belowState.is(Blocks.DIRT_PATH)) {
-                level.setBlock(belowPlaced, ModBlocks.FULL_PATH_BLOCK.get().defaultBlockState(), Block.UPDATE_ALL);
-            }
+        placeonpath$convertPathUnder(level, placedPos, placedState);
+
+        // A bed is two blocks wide; the click only covers one half, so convert the path
+        // under the other half too (otherwise one of the two paths keeps the gap).
+        if (placedState.getBlock() instanceof BedBlock) {
+            Direction facing = placedState.getValue(BedBlock.FACING);
+            BlockPos otherHalf = placedState.getValue(BedBlock.PART) == BedPart.HEAD
+                    ? placedPos.relative(facing.getOpposite())
+                    : placedPos.relative(facing);
+            placeonpath$convertPathUnder(level, otherHalf, placedState);
         }
 
         // Case 2: a path was placed directly underneath an existing block.
@@ -57,6 +61,18 @@ public class BlockItemMixin {
             } else {
                 level.setBlock(placedPos, ModBlocks.FULL_PATH_BLOCK.get().defaultBlockState(), Block.UPDATE_ALL);
             }
+        }
+    }
+
+    /** Turn the path under {@code abovePos} into dirt (blacklisted) or the full-height variant (otherwise). */
+    private static void placeonpath$convertPathUnder(Level level, BlockPos abovePos, BlockState aboveBlock) {
+        BlockPos belowPos = abovePos.below();
+        BlockState below = level.getBlockState(belowPos);
+        if (!(below.is(Blocks.DIRT_PATH) || below.is(ModBlocks.FULL_PATH_BLOCK.get()))) return;
+        if (PathRules.shouldTurnToDirt(aboveBlock)) {
+            level.setBlock(belowPos, Blocks.DIRT.defaultBlockState(), Block.UPDATE_ALL);
+        } else if (below.is(Blocks.DIRT_PATH)) {
+            level.setBlock(belowPos, ModBlocks.FULL_PATH_BLOCK.get().defaultBlockState(), Block.UPDATE_ALL);
         }
     }
 }
