@@ -1,6 +1,8 @@
 package de.maxi.placeonpath.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -10,6 +12,12 @@ public class PathFullBlock extends Block {
 
     public PathFullBlock(Properties properties) {
         super(properties);
+    }
+
+    /** Pick-block (creative middle-click) yields the normal Dirt Path, never this technical block. */
+    @Override
+    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+        return new ItemStack(Blocks.DIRT_PATH);
     }
 
     @Override

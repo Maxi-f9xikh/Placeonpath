@@ -1,5 +1,6 @@
 package de.maxi.placeonpath.mixin;
 
+import de.maxi.placeonpath.config.PathRules;
 import de.maxi.placeonpath.registry.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -26,7 +27,10 @@ public class DirtPathBlockMixin {
      */
     @Inject(method = "canSurvive", at = @At("HEAD"), cancellable = true)
     private void placeonpath$alwaysSurvive(BlockState state, LevelReader level, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(true);
+        // Keep the path alive, unless the block above is blacklisted (then let vanilla decide -> dirt).
+        if (!PathRules.shouldTurnToDirt(level.getBlockState(pos.above()))) {
+            cir.setReturnValue(true);
+        }
     }
 
     /**
@@ -35,9 +39,10 @@ public class DirtPathBlockMixin {
      */
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void placeonpath$keepPath(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, CallbackInfo ci) {
-        if (!level.getBlockState(pos.above()).isAir()) {
-            level.setBlockAndUpdate(pos, ModBlocks.FULL_PATH_BLOCK.get().defaultBlockState());
-        }
+        BlockState above = level.getBlockState(pos.above());
+        if (above.isAir()) { ci.cancel(); return; }
+        if (PathRules.shouldTurnToDirt(above)) return;   // blacklisted -> let vanilla turnToDirt run
+        level.setBlockAndUpdate(pos, ModBlocks.FULL_PATH_BLOCK.get().defaultBlockState());
         ci.cancel();
     }
 }
