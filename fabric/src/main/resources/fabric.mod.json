@@ -19,6 +19,9 @@
     ],
     "client": [
       "de.maxi.placeonpath.fabric.client.PlaceonpathFabricClient"
+    ],
+    "modmenu": [
+      "de.maxi.placeonpath.fabric.PlaceonpathModMenu"
     ]
   },
   "mixins": [
@@ -30,5 +33,8 @@
     "java": ">=21",
     "architectury": ">=15.0.3",
     "fabric-api": "*"
+  },
+  "suggests": {
+    "modmenu": "*"
   }
 }
