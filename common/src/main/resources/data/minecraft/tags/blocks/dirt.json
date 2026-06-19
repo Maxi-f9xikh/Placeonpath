@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:dirt_path",
+    "placeonpath:path_full_block"
+  ]
+}
