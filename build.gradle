@@ -32,6 +32,7 @@ allprojects {
 
     repositories {
         maven { url "https://maven.shedaniel.me/" }
+        maven { url "https://maven.terraformersmc.com/releases/" }  // Mod Menu
     }
 
     tasks.withType(JavaCompile) {
