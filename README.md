@@ -35,16 +35,6 @@ The full-height path block is purely technical:
 | 1.18.2 | Fabric, Forge | `1.18.2` |
 | 1.16.5 | Fabric, Forge | `1.16.5` |
 
-## Building
-
-Requires JDK 21 (JDK 17 for 1.16.5–1.18.2 branches).
-
-```bash
-./gradlew build
-```
-
-The built jars are placed in `fabric/build/libs/`, `neoforge/build/libs/` and `forge/build/libs/`.
-
 ## License
 
 MIT — see [LICENSE.txt](LICENSE.txt).
