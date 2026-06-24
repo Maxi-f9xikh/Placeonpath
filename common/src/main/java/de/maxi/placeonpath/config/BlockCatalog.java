@@ -1,7 +1,6 @@
 package de.maxi.placeonpath.config;
 
 import net.minecraft.core.Registry;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 
@@ -73,9 +72,14 @@ public final class BlockCatalog {
         if (p.endsWith("_carpet")) return "carpets";
         if (p.contains("torch") || p.endsWith("lantern") || p.endsWith("candle")
                 || p.contains("campfire") || p.equals("end_rod")) return "lights";
-        if (block.defaultBlockState().is(BlockTags.FLOWERS) || block.defaultBlockState().is(BlockTags.SAPLINGS)
-                || p.endsWith("_sapling") || p.contains("mushroom") || p.endsWith("_fern")
-                || p.endsWith("sprouts") || p.endsWith("roots") || p.contains("flower")) return "plants";
+        // Name-only on 1.16.5: block tags aren't bound when the screen is opened from the main menu.
+        if (p.endsWith("_sapling") || p.contains("mushroom") || p.endsWith("_fern")
+                || p.endsWith("sprouts") || p.endsWith("roots") || p.contains("flower")
+                || p.contains("tulip") || p.contains("orchid") || p.contains("allium")
+                || p.contains("bluet") || p.contains("daisy") || p.contains("cornflower")
+                || p.contains("lily") || p.contains("rose") || p.equals("poppy")
+                || p.equals("dandelion") || p.equals("sunflower") || p.equals("lilac")
+                || p.equals("peony") || p.endsWith("_bush")) return "plants";
         if (p.endsWith("_planks") || p.endsWith("_log") || p.endsWith("_wood")
                 || p.endsWith("_stem") || p.endsWith("_hyphae")) return "wood";
         if (p.contains("stone") || p.contains("brick") || p.contains("cobble")
