@@ -8,9 +8,11 @@
   ],
   "mixins": [
     "BlockItemMixin",
+    "ButtonBlockMixin",
     "BushBlockMixin",
     "DirtPathBlockMixin",
-    "DoorBlockMixin"
+    "DoorBlockMixin",
+    "PressurePlateBlockMixin"
   ],
   "injectors": {
     "defaultRequire": 1
