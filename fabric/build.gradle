@@ -31,7 +31,7 @@ dependencies {
 
     modImplementation "dev.architectury:architectury-fabric:$rootProject.architectury_api_version"
 
-    modImplementation "com.terraformersmc:modmenu:13.0.4"
+    modImplementation "com.terraformersmc:modmenu:15.0.2"
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')

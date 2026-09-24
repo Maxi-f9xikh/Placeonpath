@@ -16,21 +16,21 @@ Lets you place any block on dirt path blocks without turning them into dirt, and
 [[dependencies.placeonpath]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.4,21.5)"
+versionRange = "[21.6,21.9)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.placeonpath]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21.4,1.21.5)"
+versionRange = "[1.21.6,1.21.9)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.placeonpath]]
 modId = "architectury"
 type = "required"
-versionRange = "[15.0.3,)"
+versionRange = "[17.0.6,)"
 ordering = "AFTER"
 side = "BOTH"
 
