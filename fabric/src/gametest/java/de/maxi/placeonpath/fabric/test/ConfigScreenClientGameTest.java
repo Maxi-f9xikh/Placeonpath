@@ -18,7 +18,7 @@ public class ConfigScreenClientGameTest implements FabricClientGameTest {
         context.waitForScreen(TitleScreen.class);
         check(context, "title");
         try (TestSingleplayerContext sp = context.worldBuilder().create()) {
-            sp.getConnection().waitForChunksRender();
+            sp.getClientLevel().waitForChunksRender();
             check(context, "world");
         }
     }
