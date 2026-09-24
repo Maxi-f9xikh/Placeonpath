@@ -15,14 +15,14 @@ Lets you place any block on dirt path blocks without turning them into dirt, and
 [[dependencies.placeonpath]]
 modId = "forge"
 mandatory = true
-versionRange = "[45,)"
+versionRange = "[45,46)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.placeonpath]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.19.4,)"
+versionRange = "[1.19.4,1.20)"
 ordering = "NONE"
 side = "BOTH"
 
