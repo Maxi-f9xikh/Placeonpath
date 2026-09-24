@@ -27,6 +27,8 @@ public class ConfigScreenClientGameTest implements FabricClientGameTest {
         context.setScreen(() -> new PathConfigScreen(null));
         context.waitTicks(5);
         context.takeScreenshot("pop-" + where + "-1-open");
+        LOG.info("POPTEST {}: item components bound = {}", where,
+                context.computeOnClient(mc -> net.minecraft.world.item.Items.STONE.builtInRegistryHolder().areComponentsBound()));
 
         // GUI -> window pixel scale, and the list geometry PathConfigScreen.init() uses
         double scale = context.computeOnClient(mc -> (double) mc.getWindow().getScreenWidth() / mc.getWindow().getGuiScaledWidth());
