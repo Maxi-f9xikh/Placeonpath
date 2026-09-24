@@ -9,6 +9,7 @@ import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
@@ -209,7 +210,11 @@ public class PathConfigScreen extends Screen {
                 && mouseY >= listTop && mouseY <= listBottom;
         int bg = red ? (hover ? RED_HOVER : RED_CELL) : (hover ? GREEN_HOVER : GREEN_CELL);
         g.fill(c.x, sy, c.x + c.w, sy + c.h, bg);
-        g.item(new ItemStack(c.entry.block), c.x + 2, sy + (c.h - 16) / 2);
+        // Item components are only bound once a world is loaded; on the title screen show names only.
+        Item item = c.entry.block.asItem();
+        if (item.builtInRegistryHolder().areComponentsBound()) {
+            g.item(new ItemStack(item), c.x + 2, sy + (c.h - 16) / 2);
+        }
         int textX = c.x + 22;
         String label = this.font.plainSubstrByWidth(c.entry.name, c.x + c.w - 4 - textX);
         g.text(this.font, label, textX, sy + (c.h - 8) / 2, TEXT, false);
