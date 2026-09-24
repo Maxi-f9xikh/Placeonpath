@@ -1,5 +1,8 @@
 apply plugin: 'com.gradleup.shadow'
 
+// Architectury itself does not run on the NeoForge 26.1.0/26.1.1 betas, so this jar only covers 26.1.2.
+version = rootProject.neoforge_mod_version
+
 architectury {
     platformSetupLoomIde()
     neoForge()
