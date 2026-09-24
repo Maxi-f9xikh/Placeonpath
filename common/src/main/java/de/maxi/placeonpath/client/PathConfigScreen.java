@@ -2,7 +2,7 @@ package de.maxi.placeonpath.client;
 
 import de.maxi.placeonpath.config.BlockCatalog;
 import de.maxi.placeonpath.config.ConfigStore;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.ConfirmScreen;
@@ -148,11 +148,10 @@ public class PathConfigScreen extends Screen {
 
     // ---- rendering ----
     @Override
-    public void render(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
-        this.renderBackground(g, mouseX, mouseY, partialTick);
-        super.render(g, mouseX, mouseY, partialTick);
+    public void extractRenderState(GuiGraphicsExtractor g, int mouseX, int mouseY, float partialTick) {
+        super.extractRenderState(g, mouseX, mouseY, partialTick);
 
-        g.drawCenteredString(this.font, this.title, this.width / 2, 12, TEXT);
+        g.centeredText(this.font, this.title, this.width / 2, 12, TEXT);
         drawLegend(g);
 
         List<LayoutItem> items = buildLayout();
@@ -174,7 +173,7 @@ public class PathConfigScreen extends Screen {
         g.disableScissor();
     }
 
-    private void drawLegend(GuiGraphics g) {
+    private void drawLegend(GuiGraphicsExtractor g) {
         Component keep = Component.translatable("placeonpath.config.legend_keep");
         Component dirt = Component.translatable("placeonpath.config.legend_dirt");
         int gap = 18;
@@ -183,37 +182,37 @@ public class PathConfigScreen extends Screen {
         int x = this.width / 2 - (kw + gap + dw) / 2;
         int y = 50;
         g.fill(x, y, x + 8, y + 8, PILL_GREEN);
-        g.drawString(this.font, keep, x + 12, y, SUBTLE, false);
+        g.text(this.font, keep, x + 12, y, SUBTLE, false);
         int x2 = x + kw + gap;
         g.fill(x2, y, x2 + 8, y + 8, PILL_RED);
-        g.drawString(this.font, dirt, x2 + 12, y, SUBTLE, false);
+        g.text(this.font, dirt, x2 + 12, y, SUBTLE, false);
     }
 
-    private void renderHeader(GuiGraphics g, HeaderItem h, int sy) {
+    private void renderHeader(GuiGraphicsExtractor g, HeaderItem h, int sy) {
         g.fill(listLeft, sy, listRight, sy + HEADER_H, BG_HEADER);
-        g.drawString(this.font, isExpanded(h.cat) ? "v" : ">", listLeft + 6, sy + 7, SUBTLE, false);
+        g.text(this.font, isExpanded(h.cat) ? "v" : ">", listLeft + 6, sy + 7, SUBTLE, false);
         Component name = Component.translatable(h.cat.langKey());
-        g.drawString(this.font, name, listLeft + 20, sy + 7, TEXT, false);
-        g.drawString(this.font, "(" + h.visibleCount + ")",
+        g.text(this.font, name, listLeft + 20, sy + 7, TEXT, false);
+        g.text(this.font, "(" + h.visibleCount + ")",
                 listLeft + 20 + this.font.width(name) + 6, sy + 7, SUBTLE, false);
 
         Component pill = pillComponent(h.cat);
         int pw = this.font.width(pill) + 12;
         int px = listRight - pw - 6;
         g.fill(px, sy + 4, px + pw, sy + HEADER_H - 4, pillColor(h.cat));
-        g.drawString(this.font, pill, px + 6, sy + 7, PILL_TEXT, false);
+        g.text(this.font, pill, px + 6, sy + 7, PILL_TEXT, false);
     }
 
-    private void renderCell(GuiGraphics g, CellItem c, int sy, int mouseX, int mouseY) {
+    private void renderCell(GuiGraphicsExtractor g, CellItem c, int sy, int mouseX, int mouseY) {
         boolean red = ConfigStore.isBlacklisted(c.entry.id);
         boolean hover = mouseX >= c.x && mouseX <= c.x + c.w && mouseY >= sy && mouseY <= sy + c.h
                 && mouseY >= listTop && mouseY <= listBottom;
         int bg = red ? (hover ? RED_HOVER : RED_CELL) : (hover ? GREEN_HOVER : GREEN_CELL);
         g.fill(c.x, sy, c.x + c.w, sy + c.h, bg);
-        g.renderItem(new ItemStack(c.entry.block), c.x + 2, sy + (c.h - 16) / 2);
+        g.item(new ItemStack(c.entry.block), c.x + 2, sy + (c.h - 16) / 2);
         int textX = c.x + 22;
         String label = this.font.plainSubstrByWidth(c.entry.name, c.x + c.w - 4 - textX);
-        g.drawString(this.font, label, textX, sy + (c.h - 8) / 2, TEXT, false);
+        g.text(this.font, label, textX, sy + (c.h - 8) / 2, TEXT, false);
     }
 
     // ---- input ----
