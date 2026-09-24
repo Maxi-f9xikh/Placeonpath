@@ -70,7 +70,7 @@ public class PathConfigScreen extends Screen {
     private static void bindDefaultItemComponents() {
         if (Items.STONE.builtInRegistryHolder().areComponentsBound()) return;
         try {
-            HolderLookup.Provider lookup = VanillaRegistries.createReloadableLookup(VanillaRegistries.createWorldLookup());
+            HolderLookup.Provider lookup = VanillaRegistries.createLookup();
             for (DataComponentInitializers.PendingComponents<?> pending : BuiltInRegistries.DATA_COMPONENT_INITIALIZERS.build(lookup)) {
                 if (pending.key().equals(Registries.ITEM)) pending.apply();
             }
