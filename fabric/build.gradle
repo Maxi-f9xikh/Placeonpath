@@ -5,6 +5,15 @@ architectury {
     fabric()
 }
 
+fabricApi {
+    configureTests {
+        createSourceSet = true
+        modId = 'placeonpath-test'
+        enableGameTests = false
+        enableClientGameTests = true
+    }
+}
+
 configurations {
     common {
         canBeResolved = true
