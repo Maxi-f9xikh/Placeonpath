@@ -73,7 +73,7 @@ public final class BlockCatalog {
         if (p.endsWith("_carpet")) return "carpets";
         if (p.contains("torch") || p.endsWith("lantern") || p.endsWith("candle")
                 || p.contains("campfire") || p.equals("end_rod")) return "lights";
-        if (block.defaultBlockState().is(BlockTags.FLOWERS) || block.defaultBlockState().is(BlockTags.SAPLINGS)
+        if (block.defaultBlockState().is(BlockTags.FLOWERS)
                 || p.endsWith("_sapling") || p.contains("mushroom") || p.endsWith("_fern")
                 || p.endsWith("sprouts") || p.endsWith("roots") || p.contains("flower")) return "plants";
         if (p.endsWith("_planks") || p.endsWith("_log") || p.endsWith("_wood")

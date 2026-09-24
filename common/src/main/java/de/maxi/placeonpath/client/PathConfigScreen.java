@@ -273,20 +273,20 @@ public class PathConfigScreen extends Screen {
 
     private void saveAndExit() {
         ConfigStore.save();
-        this.minecraft.setScreen(parent);
+        this.minecraft.gui.setScreen(parent);
     }
 
     private void exitWithoutSave() {
         if (!hasUnsavedChanges()) {
-            this.minecraft.setScreen(parent);
+            this.minecraft.gui.setScreen(parent);
             return;
         }
-        this.minecraft.setScreen(new ConfirmScreen(confirmed -> {
+        this.minecraft.gui.setScreen(new ConfirmScreen(confirmed -> {
             if (confirmed) {
                 ConfigStore.replaceAll(original); // discard the unsaved edits
-                this.minecraft.setScreen(parent);
+                this.minecraft.gui.setScreen(parent);
             } else {
-                this.minecraft.setScreen(this);
+                this.minecraft.gui.setScreen(this);
             }
         }, Component.translatable("placeonpath.config.discard_title"),
            Component.translatable("placeonpath.config.discard_message")));
