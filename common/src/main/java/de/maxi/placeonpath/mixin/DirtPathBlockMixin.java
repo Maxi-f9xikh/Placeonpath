@@ -6,7 +6,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.DirtPathBlock;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.PathBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,7 +15,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(DirtPathBlock.class)
+// PathBlock is generic since 26.3 (other mods can add their own paths); only touch the dirt path.
+@Mixin(PathBlock.class)
 public class DirtPathBlockMixin {
 
     /**
@@ -27,6 +29,7 @@ public class DirtPathBlockMixin {
      */
     @Inject(method = "canSurvive", at = @At("HEAD"), cancellable = true)
     private void placeonpath$alwaysSurvive(BlockState state, LevelReader level, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+        if (!state.is(Blocks.DIRT_PATH)) return;
         // Keep the path alive, unless the block above is blacklisted (then let vanilla decide -> dirt).
         if (!PathRules.shouldTurnToDirt(level.getBlockState(pos.above()))) {
             cir.setReturnValue(true);
@@ -39,6 +42,7 @@ public class DirtPathBlockMixin {
      */
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void placeonpath$keepPath(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, CallbackInfo ci) {
+        if (!state.is(Blocks.DIRT_PATH)) return;
         BlockState above = level.getBlockState(pos.above());
         if (above.isAir()) { ci.cancel(); return; }
         if (PathRules.shouldTurnToDirt(above)) return;   // blacklisted -> let vanilla turnToDirt run
