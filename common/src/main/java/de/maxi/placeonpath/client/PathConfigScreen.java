@@ -7,6 +7,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
@@ -217,9 +218,11 @@ public class PathConfigScreen extends Screen {
 
     // ---- input ----
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (super.mouseClicked(mouseX, mouseY, button)) return true;
-        if (button != 0 || mouseY < listTop || mouseY > listBottom
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        if (super.mouseClicked(event, doubleClick)) return true;
+        double mouseX = event.x();
+        double mouseY = event.y();
+        if (event.button() != 0 || mouseY < listTop || mouseY > listBottom
                 || mouseX < listLeft - 2 || mouseX > listRight + 2) return false;
 
         for (LayoutItem item : buildLayout()) {
