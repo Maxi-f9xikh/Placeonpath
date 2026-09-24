@@ -2,6 +2,7 @@ package de.maxi.placeonpath.client;
 
 import de.maxi.placeonpath.config.BlockCatalog;
 import de.maxi.placeonpath.config.ConfigStore;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -226,7 +227,7 @@ public class PathConfigScreen extends Screen {
         if (super.mouseClicked(event, doubleClick)) return true;
         double mouseX = event.x();
         double mouseY = event.y();
-        if (event.button() != 0 || mouseY < listTop || mouseY > listBottom
+        if (event.button() != InputConstants.MOUSE_BUTTON_LEFT || mouseY < listTop || mouseY > listBottom
                 || mouseX < listLeft - 2 || mouseX > listRight + 2) return false;
 
         for (LayoutItem item : buildLayout()) {
