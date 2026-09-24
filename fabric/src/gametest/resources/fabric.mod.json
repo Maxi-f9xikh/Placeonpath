@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "id": "placeonpath-test",
+  "version": "1.0.0",
+  "name": "PlaceOnPath client tests",
+  "environment": "client",
+  "entrypoints": {
+    "fabric-client-gametest": [
+      "de.maxi.placeonpath.fabric.test.ConfigScreenClientGameTest"
+    ]
+  }
+}
