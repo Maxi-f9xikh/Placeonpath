@@ -9,7 +9,7 @@ architectury {
 
 loom {
     forge {
-        mixinConfig 'placeonpath.mixins.json'
+        mixinConfig 'placeonpath.forge.mixins.json'
     }
 }
 

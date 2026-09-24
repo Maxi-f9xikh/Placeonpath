@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "package": "de.maxi.placeonpath.forge.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "minVersion": "0.8",
+  "refmap": "placeonpath-forge-forge-refmap.json",
+  "mixins": [
+    "BlockItemForgeMixin",
+    "BushBlockForgeMixin",
+    "ButtonBlockForgeMixin",
+    "DirtPathBlockForgeMixin",
+    "DoorBlockForgeMixin",
+    "PressurePlateBlockForgeMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

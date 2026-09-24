@@ -34,4 +34,4 @@ ordering = "AFTER"
 side = "BOTH"
 
 [[mixins]]
-config = "placeonpath.mixins.json"
+config = "placeonpath.forge.mixins.json"
