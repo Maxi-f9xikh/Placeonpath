@@ -2,7 +2,7 @@ package de.maxi.placeonpath.config;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -13,12 +13,12 @@ public final class PathRules {
     public static boolean shouldTurnToDirt(BlockState above) {
         var entries = ConfigStore.entries();
         if (entries.isEmpty()) return false;
-        ResourceLocation id = BuiltInRegistries.BLOCK.getKey(above.getBlock());
+        Identifier id = BuiltInRegistries.BLOCK.getKey(above.getBlock());
         for (String raw : entries) {
             String e = raw.trim();
             if (e.isEmpty()) continue;
             if (e.startsWith("#")) {
-                ResourceLocation tag = ResourceLocation.tryParse(e.substring(1));
+                Identifier tag = Identifier.tryParse(e.substring(1));
                 if (tag != null && above.is(TagKey.create(Registries.BLOCK, tag))) return true;
             } else if (id.toString().equals(e) || id.getPath().equals(e)) {
                 return true;
