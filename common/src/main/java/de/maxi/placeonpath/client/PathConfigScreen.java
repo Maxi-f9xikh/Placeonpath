@@ -148,7 +148,6 @@ public class PathConfigScreen extends Screen {
     // ---- rendering ----
     @Override
     public void render(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
-        this.renderBackground(g, mouseX, mouseY, partialTick);
         super.render(g, mouseX, mouseY, partialTick);
 
         g.drawCenteredString(this.font, this.title, this.width / 2, 12, TEXT);
