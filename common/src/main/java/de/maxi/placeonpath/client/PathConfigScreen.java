@@ -8,9 +8,17 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
+import com.mojang.logging.LogUtils;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentInitializers;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,6 +26,7 @@ import java.util.List;
 import java.util.Set;
 
 public class PathConfigScreen extends Screen {
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     private final Screen parent;
     private final Set<String> original;            // baseline at open, to detect/discard unsaved edits
@@ -50,6 +59,24 @@ public class PathConfigScreen extends Screen {
         super(Component.translatable("placeonpath.config.title"));
         this.parent = parent;
         this.original = new HashSet<>(ConfigStore.entries());
+        bindDefaultItemComponents();
+    }
+
+    /**
+     * Item components are only bound once a world loads, so on the title screen no ItemStack can be
+     * created (no icons). Bind vanilla defaults from the built-in registries, like the Create World
+     * screen does after loading the vanilla datapack; loading a world re-binds them with real data.
+     */
+    private static void bindDefaultItemComponents() {
+        if (Items.STONE.builtInRegistryHolder().areComponentsBound()) return;
+        try {
+            HolderLookup.Provider lookup = VanillaRegistries.createReloadableLookup(VanillaRegistries.createWorldLookup());
+            for (DataComponentInitializers.PendingComponents<?> pending : BuiltInRegistries.DATA_COMPONENT_INITIALIZERS.build(lookup)) {
+                if (pending.key().equals(Registries.ITEM)) pending.apply();
+            }
+        } catch (RuntimeException e) {
+            LOGGER.warn("Could not prepare item icons for the title screen; showing names only", e);
+        }
     }
 
     @Override
